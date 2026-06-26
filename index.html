@@ -65,10 +65,10 @@ function showError(msg){
 function render(){
   var h = location.hash.replace(/^#/,'');
   if(!h){ showError('Mã QR không chứa dữ liệu.'); return; }
-  var name,dob,cccd,gender;
+  var name,dob,gender;
   try{
-    var p = unb64u(h).split('|');   // [ver, tên, ngày sinh, hộ chiếu/cccd, giới tính]
-    name=p[1]; dob=p[2]; cccd=p[3]; gender=p[4];
+    var p = unb64u(h).split('|');   // [ver, tên, ngày sinh, giới tính]
+    name=p[1]; dob=p[2]; gender=p[3];
     if(!name) throw 0;
   }catch(e){ showError('Định dạng dữ liệu không hợp lệ.'); return; }
 
@@ -91,7 +91,6 @@ function render(){
         row('Họ và tên', name)+
         row('Ngày sinh', dob)+
         row('Giới tính', gender)+
-        row('Hộ chiếu / CCCD', cccd)+
         row('Cơ sở y tế', 'Bệnh viện Đại học Y Hải Phòng')+
       '</div>'+
       '<div class="foot">Chứng nhận điện tử • Quét từ mã QR'+
