@@ -27,10 +27,11 @@
   .badge b{display:block;color:var(--green);font-size:16px;font-weight:800;text-transform:uppercase}
   .badge span{font-size:11px;color:#4a6a59}
   .info{padding:4px 18px 6px}
-  .row{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid var(--line);font-size:14px}
+  .row{padding:9px 0;border-bottom:1px solid var(--line)}
   .row:last-child{border-bottom:none}
-  .row .k{color:var(--muted);flex:0 0 auto}
-  .row .v{font-weight:600;text-align:right;word-break:break-word}
+  .row .k{display:block;color:var(--muted);font-size:12px}
+  .row .k i{font-style:normal;color:#9bb0bf;font-weight:400}
+  .row .v{display:block;font-weight:600;font-size:15px;margin-top:2px;word-break:break-word}
   .foot{padding:12px 18px 18px;text-align:center;font-size:11px;color:var(--muted)}
   .foot .src{margin-top:6px;color:#9bb0bf}
   .err{padding:40px 24px;text-align:center;color:var(--muted)}
@@ -54,8 +55,9 @@ function esc(s){
     return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];
   });
 }
-function row(k,v){
-  return '<div class="row"><span class="k">'+k+'</span><span class="v">'+esc(v||'—')+'</span></div>';
+function row(vn,en,v){
+  return '<div class="row"><span class="k">'+vn+' <i>'+en+'</i></span>'+
+         '<span class="v">'+esc(v||'—')+'</span></div>';
 }
 function showError(msg){
   document.getElementById('app').innerHTML =
@@ -71,6 +73,9 @@ function render(){
     name=p[1]; dob=p[2]; gender=p[3];
     if(!name) throw 0;
   }catch(e){ showError('Định dạng dữ liệu không hợp lệ.'); return; }
+
+  var gMap={'Nam':'Nam / Male','Nữ':'Nữ / Female','Khác':'Khác / Other'};
+  var genderBi = gMap[gender] || gender;
 
   document.getElementById('app').innerHTML =
     '<div class="card">'+
@@ -88,13 +93,13 @@ function render(){
         '<span>Fit for look-out duty</span>'+
       '</div>'+
       '<div class="info">'+
-        row('Họ và tên', name)+
-        row('Ngày sinh', dob)+
-        row('Giới tính', gender)+
-        row('Cơ sở y tế', 'Bệnh viện Đại học Y Hải Phòng')+
+        row('Họ và tên', 'Full name', name)+
+        row('Ngày sinh', 'Date of birth', dob)+
+        row('Giới tính', 'Gender', genderBi)+
+        row('Cơ sở y tế', 'Healthcare facility', 'Bệnh viện Đại học Y Hải Phòng (Haiphong Medical University Hospital)')+
       '</div>'+
       '<div class="foot">Chứng nhận điện tử • Quét từ mã QR'+
-        '<div class="src">Thông tin được mã hóa trực tiếp trong mã QR</div>'+
+        '<div class="src">Electronic certificate • Scanned from QR code</div>'+
       '</div>'+
     '</div>';
 }
